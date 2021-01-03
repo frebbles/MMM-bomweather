@@ -77,6 +77,7 @@ Module.register("bomweather",{
                         return wrapper;
                 }
 
+		var showRadar = 0;
                 var table = document.createElement("table");
                 table.className = this.config.tableClass;
                 for (var f in this.forecast) {
@@ -138,6 +139,9 @@ console.log(forecast);
 				rainCCell.innerHTML = forecast.rainChance;
 				rainCCell.className = "align-right bright rain";
 				row.appendChild(rainCCell);
+				if ((f == 0) && (forecast.rainChance != "0%")) {
+				 showRadar = 1;
+				}
 			}
 
                         if (this.config.showRainAmount) {
@@ -162,6 +166,19 @@ console.log(forecast);
                                         row.style.opacity = 1 - (1 / steps) * currentStep;
                                 }
                         }
+                }
+
+                if (this.config.radarImage && showRadar) {
+                        var radarImg = document.createElement("img");
+                        radarImg.setAttribute("src", this.config.radarImage);
+                        radarImg.setAttribute("width", "340px");
+                        var radarCell = document.createElement("td");
+			radarCell.setAttribute("colspan", "42");
+                        radarCell.appendChild(radarImg);
+                        var radarRow = document.createElement("tr");
+                        radarRow.appendChild(radarCell);
+                        table.append(radarRow);
+
                 }
 
 		console.log("bomweather: Rendering complete");
